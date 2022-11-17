@@ -13,14 +13,7 @@ import Register from "./Register.js";
 import Login from "./Login.js";
 import ProtectedRoute from "./ProtectedRoute";
 import { useState } from "react";
-import {
-  Route,
-  Switch,
-  Redirect,
-  NavLink,
-  Link,
-  useHistory,
-} from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import InfoTool from "./InfoTooltip";
 
@@ -40,19 +33,28 @@ function App() {
 
   React.useEffect(() => {
     let jwt = localStorage.getItem("jwt");
-    console.log(jwt);
-    //BEARER JWT 401 !!!
-    //проблема в кавычках. сейчас передается хардкод джвт
     if (jwt) {
       jwt = jwt.replace(/["]/g, "");
-      AuthX.checkToken(jwt).then((res) => {
-        if (res) {
-          setEmail(res.data.email);
-          setLoggedIn(true);
-          console.log(res);
-          console.log(res.data.email);
-        }
-      });
+      AuthX.checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setEmail(res.data.email);
+            setLoggedIn(true);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (loggedIn === true) {
+      Promise.all([ApiX.getInitialCards(), ApiX.getUser()])
+        .then(([itemsApi, userData]) => {
+          setCurrentUser(userData);
+          setCards(itemsApi);
+        })
+        .then(closeAllPopups)
+        .catch((err) => console.log(err));
     }
   }, []);
 
@@ -110,16 +112,6 @@ function App() {
       .catch((err) => console.log(err));
   };
 
-  React.useEffect(() => {
-    Promise.all([ApiX.getInitialCards(), ApiX.getUser()])
-      .then(([itemsApi, userData]) => {
-        setCurrentUser(userData);
-        setCards(itemsApi);
-      })
-      .then(closeAllPopups)
-      .catch((err) => console.log(err));
-  }, []);
-
   function handleCardLike(card) {
     const isLiked = card.likes.some((item) => item._id === currentUser._id);
     ApiX.changeLikeStatus(card._id, !isLiked)
@@ -151,18 +143,11 @@ function App() {
       .then((res) => {
         localStorage.setItem("jwt", JSON.stringify(res.token));
         setEmail(email);
-        // const jwt = localStorage.getItem("jwt");
       })
-      // .then(() => {
-      //   setSuccess(true);
-      //   setToolOpened(true);
-      // })
+
       .then(() => {
-        // setTimeout(() => {
         setLoggedIn(true);
         history.push("/");
-        //   setToolOpened(false);
-        // }, 1000);
       })
       .catch((err) => {
         console.log(err);
@@ -178,7 +163,6 @@ function App() {
       })
       .then(() => {
         setTimeout(() => {
-          // setLoggedIn(true);
           history.push("/login");
           setToolOpened(false);
         }, 5000);
@@ -191,8 +175,6 @@ function App() {
   }
 
   return (
-    // App.js
-
     <div className="body">
       <div className="page">
         <CurrentUserContext.Provider value={currentUser}>
@@ -232,6 +214,8 @@ function App() {
             isOpened={isToolOpened}
             suc={success}
             onClose={closeAllPopups}
+            sucReg={"Вы успешно зарегистрировались!"}
+            failReg={"Что-то пошло не так! Попробуйте еще раз."}
           />
 
           <ImagePopup

@@ -3,19 +3,14 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlace(props) {
-  // const [cards, setCards] = React.useState("");
-
   const [name, setName] = React.useState("");
   const [link, setLink] = React.useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(name);
-    console.log(link);
     props.onUpdate({ name, link });
     setName("");
     setLink("");
-    // props.onClose();
   };
 
   const handlePlaceLink = (e) => {

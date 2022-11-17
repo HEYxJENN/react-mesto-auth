@@ -22,7 +22,6 @@ export function EditProfile(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("saved");
     props.onUpdate({
       name: name,
       about: description,

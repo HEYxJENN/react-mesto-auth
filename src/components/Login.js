@@ -68,8 +68,6 @@ function Login(props) {
             </label>
 
             <button className="registration__confirm">Войти</button>
-
-            {/* <h3 className="registration__already"> Регистрация </h3> */}
           </fieldset>
         </form>
       </div>

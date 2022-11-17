@@ -7,7 +7,6 @@ function EditAvatar(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(avatar);
     props.onUpdate({
       avatar: avatar,
     });

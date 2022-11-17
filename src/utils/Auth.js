@@ -34,13 +34,11 @@ class Auth extends React.Component {
   }
 
   checkToken(jwt) {
-    console.log(jwt);
     return fetch(`${this._address}/users/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
-        // `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzcyNjE1NGQ0NTY3YzAwMTMxZTMyNTgiLCJpYXQiOjE2Njg0NDE3MjJ9.CP33r0bR6kpY2WHnYJBc4tfzsmYi2ANoscrGo1aNhO4`,
       },
     }).then(this._getRes);
   }

@@ -15,17 +15,15 @@ function Card(props) {
 
   function handleLike() {
     props.onLikeClick(props.card);
-    console.log("like");
   }
 
   function handleDelete() {
     props.onDeleteClick(props.card);
-    console.log("Del");
   }
 
-  function handleClick() {
-    console.log("click");
-  }
+  // function handleClick() {
+  //   console.log("click");
+  // }
 
   return (
     <li className="element">

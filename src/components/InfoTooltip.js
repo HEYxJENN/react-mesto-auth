@@ -5,9 +5,10 @@ import Dec from "../images/Declined.png";
 function InfoTool(props) {
   const classy = props.isOpened ? "popup popup_opened" : "popup";
   const imag = props.suc ? Apr : Dec;
-  const inscription = props.suc
-    ? "Вы успешно зарегистрировались!"
-    : "Что-то пошло не так! Попробуйте еще раз.";
+  const inscription = props.suc ? props.sucReg : props.failReg;
+  // ? "Вы успешно зарегистрировались!"
+  // : "Что-то пошло не так! Попробуйте еще раз.";
+  // переписать как будет время
 
   return (
     <div className={classy}>
